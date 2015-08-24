@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Condor Import Pipeline</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<style type="text/css">
+.content-box {
+	max-width: 1700px;
+	margin: auto;
+}
+
+#overview_table td:nth-child(1), #overview_table td:nth-child(2) {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: left;
+}
+
+#overview_table td:nth-child(3) {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+</style>
+<script src="js/jquery-1.10.2.js"></script>
+</head>
+<body>
+	<div id="loading" class="hidden">
+		<div class="msg">Loading...</div>
+	</div>
+	<div class="nav-container">
+		<a href="condor-import-dashboard.html" class="nav-button active">
+			<span class="icon"></span><span>Condor Export Dashboard</span>
+		</a> <a href="status-overview.html" class="nav-button"> <span
+			class="icon"></span><span>Stakeholder Dashboard</span>
+		</a> <a href="performance-dashboard.html" class="nav-button"> <span
+			class="icon"></span><span>Performance Dashboard</span>
+		</a> <a href="index.html" class="nav-button"> <span class="icon"></span><span>User
+				Dashboard</span>
+		</a>
+	</div>
+	<div id="header">
+		<div class="topbar">
+			<img id="logo" src="img/logo.png">
+			<div class="heading">
+				<div>Condor Import Pipeline</div>
+				<div>Powered by Ecosystem Content Services</div>
+				<div class="version">
+					(CIP_R0.1.14; <span id="env_info">...</span>)
+				</div>
+			</div>
+			<div id="env_info">...</div>
+		</div>
+		<div class="title-bar">
+			<div class="f-right">
+				<div class="paging-buttons">
+					<span class="paging-label">Nothing to display</span>
+					<button id="page_prev" class="button">
+						<span class="icon"></span>
+					</button>
+					<button id="page_next" class="button">
+						<span class="icon"></span>
+					</button>
+				</div>
+			</div>
+			<h1>Condor Export Dashboard</h1>
+		</div>
+	</div>
+	<div class="container">
+		<div class="content-box">
+			<table id="overview_table" class="cip-table main-table">
+				<col width="210">
+				<col width="">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<col width="90">
+				<thead>
+					<tr>
+						<th rowspan="2" colspan="2">Content Set</th>
+						<th colspan="2">Condor Export for TEST</th>
+						<th colspan="2">Condor Import for TEST</th>
+						<th colspan="2">Condor Export for PRESTAGE</th>
+						<th colspan="2">Condor Import for PRESTAGE</th>
+						<th colspan="2">Condor Export for PRODUCTION</th>
+						<th colspan="2">Condor Import for PRODUCTION</th>
+					</tr>
+					<tr>
+						<th>OK</th>
+						<th>Errors</th>
+						<th>OK</th>
+						<th>Errors</th>
+						<th>OK</th>
+						<th>Errors</th>
+						<th>OK</th>
+						<th>Errors</th>
+						<th>OK</th>
+						<th>Errors</th>
+						<th>OK</th>
+						<th>Errors</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+	<div id="rerun_popup" style="display: none">
+		<div class="popup-layer"></div>
+		<div class="popup">
+			<div class="popup-box">
+				<h4>
+					Re-run package <span id="rerun_popup_packagename"></span>
+				</h4>
+				<p class="section">In order to re-run the given package, please
+					select the process you want this package to start processing from.</p>
+				<div class="section">
+					<label>Process: </label> <select id="rerun_provider">
+						<option></option>
+						<option value="test">Condor Export For Test</option>
+						<option value="prestage">Condor Export For Prestage</option>
+						<option value="production">Condor Export For Production</option>
+					</select>
+				</div>
+				<div id="error_message" class="error-message">&nbsp;</div>
+				<div class="section button-bar">
+					<button class="button ok" id="rerun_popup_ok">Rerun</button>
+					<button class="button" id="rerun_popup_cancel">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/common.js"></script>
+	<script src="js/condor-import-dashboard.js"></script>
+</body>
+</html>

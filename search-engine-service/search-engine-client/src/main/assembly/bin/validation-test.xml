@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "test-suite.dtd">
+<!--
+ The suite element is the root element for this test suite, it has one attribute "name" which
+ contains the name of this suite. The name attribnute can contain any readable name even with spaces. 
+-->
+<suite name="PackageValidation">
+    <!--
+     This is a test, which has the name, a reference to an input PCI package and a list of expected
+     errors, if any.
+     If you want to specify that test expects no errors, just set the sum attribute value to "0"
+     as it shown below.
+    -->
+    <test name="Valid Package">
+        <description>
+            <![CDATA[
+            This test determines whether a valid PCI package successfully passes the "Condor PCI Default" package validation aspect.
+            The PACK_0.zip test package is completely valid according to the PCI specification. 
+            The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_0.zip">PACK_0.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_0.zip" />
+        <expect-errors sum="0" />
+    </test>
+    <test name="Invalid Manifest">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which has the invalid manifest fails the "Condor PCI Default" package validation aspect. 
+            The PACK_1.zip test package has the manifest which doesn't comply with the PCI-protocol3.xsd schema. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_1.zip">PACK_1.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_1.zip" />
+        <expect-errors>
+            <error type="ValidationException" message="Manifest is not valid according to XSD schema">
+            </error>
+        </expect-errors>
+    </test>
+    <test name="Missed Resource">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which lacks resources declared in the manifest fails the "Condor PCI Default" package validation aspect.
+            The PACK_2.zip test package has the manifest referring to a resource which is not present in the package file structure. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_2.zip">PACK_2.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_2.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="Package does not contain a file referenced in the manisfest">
+            </error>
+        </expect-errors> 
+    </test>
+    <test name="Unexpected Resource">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which contains a resource not declared in the the manifest fails the "Condor PCI Default" package validation aspect.
+            The PACK_3.zip test package contains a resource in the package file structure which is not declared in the manifest. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_3.zip">PACK_3.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_3.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="Package contains a file not mentioned in the manifest">
+            </error>
+        </expect-errors> 
+    </test>
+    <!--
+    <test name="Unexpected Interchange Object">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which contains an Interchange object fails the "Condor PCI Default" package validation aspect.
+            The PACK_4.zip test package contains an Interchange object. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_4.zip">PACK_4.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_4.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="PCI package contains Interchange objects"> 
+            </error>
+        </expect-errors>
+    </test>
+    -->
+    <test name="Invalid Folder Structure">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which has invalid folder structure fails the "Condor PCI Default" package validation aspect.
+            The PACK_5.zip test package has invalid folder structure according to the PCI specification. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_5.zip">PACK_5.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+             ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_5.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="The folder structure of PCI package is invalid">
+            </error>
+        </expect-errors> 
+    </test>
+    <test name="Package Without Content">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which has no content fails the "Condor PCI Default" package validation aspect.
+            The PACK_6.zip test package has no content. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_6.zip">PACK_6.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_6.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="Manifest is not valid according to XSD schema" />
+        </expect-errors>
+    </test>
+    <test name="Invalid ZIP">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package represented as an invalid ZIP archive fails the "Condor PCI Default" package validation aspect.
+            The PACK_7.zip test package is represented as an invalid ZIP archive (can not be unpacked). The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_7.zip">PACK_7.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_7.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="PCI package represented as an invalid ZIP archive">
+            </error>
+        </expect-errors> 
+    </test>
+    <test name="Package Without Manifest">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which doesn't contain the manifest fails the "Condor PCI Default" package validation aspect.
+            The PACK_8.zip test package lacks the manifest file. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_8.zip">PACK_8.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-106">https://94.100.246.14/jira/browse/PCI-106</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_8.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="PCI package doesn't have the manifest file">
+            </error>
+        </expect-errors> 
+    </test>
+    <test name="Valid package according to XML validation rules">
+        <description>
+            <![CDATA[
+            This test determines whether a valid PCI package successfully passes the "Condor PCI Default" configuration with regard to the XML validation rules.
+            The PACK_9.zip test package is completely valid according to the XML validation rules. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_9.zip">PACK_9.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-107">https://94.100.246.14/jira/browse/PCI-107</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_9.zip" />
+        <expect-errors sum="0" /> 
+    </test>
+    <test name="Validation according to the PCI.xsd">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package fails the "Condor PCI Default" configuration on PCI.xsd validation. The PACK_10.zip test package has xhtml files invalid according to PCI.xsd.
+            The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_10">PACK_10</a>.zip.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-107">https://94.100.246.14/jira/browse/PCI-107</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_10.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="wk-us\Mercury\58a432a10a103a089aed41473360ed76\Default\doc.xhtml: XHTML file is not valid according to the schema">
+            </error>
+        </expect-errors> 
+    </test>
+    <test name="Validation according to the PCI Schematron rules">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package fails the "Condor PCI Default" configuration on the PCI Schematron rules.
+            The PACK_11.zip test package has files invalid according to the PCI Schematron rules. The test package is available in SVN at
+            <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_11.zip">PACK_11.zip</a>.
+            For detailed description see <a href ="https://94.100.246.14/jira/browse/PCI-107">https://94.100.246.14/jira/browse/PCI-107</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_11.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="wk-us\Mercury\58a432a10a103a089aed41473360ed76\Default\doc.xhtml: XML file is invalid according to schematron" />
+        </expect-errors> 
+    </test>
+    <test name="Validation according to the Condor NA Schematron rules">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package fails the "Condor PCI Default" configuration on the Condor NA Schematron rules.
+            The PACK_12.zip test package has files invalid according to the Condor NA Schematron rules.
+            The test package is available in SVN at
+            <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_12.zip">PACK_12.zip</a>.
+            For detailed description see <a href ="https://94.100.246.14/jira/browse/PCI-107">https://94.100.246.14/jira/browse/PCI-107</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_12.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="wk-us\Mercury\58a432a10a103a089aed41473360ed76\Default\doc.xhtml: XML file is invalid according to schematron" />
+        </expect-errors> 
+    </test>
+    <test name="Valid package according to RDF validation rules">
+        <description>
+            <![CDATA[
+            This test determines whether a valid PCI package successfully passes the "Condor PCI Default" configuration with regard to the RDF validation rules.
+            The PACK_13.zip test package is completely valid according to the RDF validation rules.
+            The test package is available in SVN at
+            <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_13.zip">PACK_13.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-107">https://94.100.246.14/jira/browse/PCI-107</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_13.zip" />
+        <expect-errors sum="0" /> 
+    </test>
+    <test name="Validation against an ontology">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package fails the "Condor PCI Default" on the ontology compliance aspect.
+            The PACK_14.zip test package has files invalid against an ontology.
+            The test package is available in SVN at
+            <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_14.zip">PACK_14.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-107">https://94.100.246.14/jira/browse/PCI-107</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_14.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="RDF file is invalid with ontolgy" />
+        </expect-errors> 
+    </test>
+    <test name="Validation according to the RDF business rules">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package fails the "Condor PCI Default" configuration on the RDF business rules aspect.
+            The PACK_15.zip test package has files invalid according to the RDF business rules.
+            The test package is available in SVN at
+            <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_15.zip">PACK_15.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-107">href="https://94.100.246.14/jira/browse/PCI-107</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_15.zip" />
+        <expect-errors>
+            <error type="ValidationException"  message="wk-us\Mercury\58a432a10a103a089aed41473360ed76\Default\meta.rdf: RDF file is invalid according to business rules" />
+        </expect-errors> 
+    </test>
+    <test name="Validation according to the controlled vocabulary">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package fails the "Condor PCI Default" configuration on the controlled vocabulary validation.
+            The PACK_16.zip test package invalid according to the controlled vocabulary.
+            The test package is available in SVN at
+            <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_16.zip">PACK_16.zip</a>.
+            For detailed description see <a href="https://94.100.246.14/jira/browse/PCI-107">https://94.100.246.14/jira/browse/PCI-107</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_16.zip" />
+        <expect-errors>
+            <error type="ValidationException" message="RDF file is invalid with SKOS" />
+        </expect-errors> 
+    </test>
+    <test name="UTF-8 package encoding ">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which has all files with UTF-8 encoding is valid.
+            The PACK_UTF.zip test package has the files with UTF-8 Encoding. The test package is available in SVN at <a href ="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_UTF.zip">PACK_UTF.zip</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_UTF.zip" />
+        <expect-errors sum="0" /> 
+    </test>
+    <test name="ANSI package encoding ">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package which has all files with ANCI encoding is valid.
+            The PACK_ANSI.zip test package has the files with ANSI Encoding. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/PACK_ANSI.zip">PACK_ANSI.zip</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/PACK_ANSI.zip" />
+        <expect-errors sum="0" /> 
+    </test>
+
+    <test name="Big package validation">
+        <description>
+            <![CDATA[
+            This test determines whether a PCI package with big size can successfully passes the "Condor PCI Default" package validation aspect.
+            The big_pci_package.zip test package has the size is about 100MB. The test package is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/big_pci_package.zip">big_pci_package.zip</a>.
+            ]]>
+        </description>
+        <input location="src/test/resources/testpackages/big_pci_package.zip" />
+        <expect-errors sum="0" /> 
+    </test>
+
+    <test name="UTF-8 manifest file encoding" method="validateXml">
+        <description>
+           <![CDATA[
+           This test determines whether the manifest with UTF-8 encoding is valid. The test file is available in SVN at <a href="src/test/resources/testpackages/validateCorrectManifestTest.xml">validateCorrectManifestTest.xml</a>.
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/validateCorrectManifestTest.xml" />
+        <input-param name="schema" value="CeresProtocol3.xsd" />
+        <expect-errors />
+    </test>
+    <test name="ANSI manifest encoding" method="validateXml">
+        <description>
+            <![CDATA[
+            This test determines whether the manifest with ANSI encoding is valid. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/validateCorrectManifestAnsiTest.xml">validateCorrectManifestAnsiTest.xml</a>. 
+            ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/validateCorrectManifestAnsiTest.xml" />
+        <input-param name="schema" value="CeresProtocol3.xsd" />
+        <expect-errors />
+    </test>
+    <test name="UTF-8 xhtml encoding" method="validateXml">
+        <description>
+           <![CDATA[
+           This test determines whether the xhtml file with UTF-8 encoding is valid. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/validateCorrectXhtmlTest.xhtml">validateCorrectXhtmlTest.xhtml</a>.
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/validateCorrectXhtmlTest.xhtml" />
+        <input-param name="schema" value="PCI.xsd" />
+        <expect-errors />
+    </test>
+    <test name="ANSI xhtml encoding" method="validateXml">
+        <description>
+           <![CDATA[
+           This test determines whether the mxhtml file with ANSI encoding is valid. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/validateCorrectXhtmlAnsiTest.xhtml">validateCorrectXhtmlAnsiTest.xhtml</a>. 
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/validateCorrectXhtmlAnsiTest.xhtml" />
+        <input-param name="schema" value="PCI.xsd" />
+        <expect-errors />
+    </test>
+    <test name="UTF-8 RDF encoding" method="validateRdf">
+        <description>
+           <![CDATA[
+           This test determines whether the rdf file with UTF-8 encoding is valid. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/validateCorrectRdfTest.rdf">validateCorrectRdfTest.rdf</a>.
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/validateCorrectRdfTest.rdf" />
+        <input-param name="schema" value="condor.ttl" />
+        <expect-errors/>
+    </test>
+    <test name="ANSI RDF encoding" method="validateRdf">
+        <description>
+           <![CDATA[
+           This test determines whether the rdf file with ANSI encoding is valid. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/validateCorrectRdfANSITest.rdf">validateCorrectRdfANSITest.rdf</a>.
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/validateCorrectRdfANSITest.rdf" />
+        <input-param name="schema" value="condor.ttl" />
+        <expect-errors/>
+    </test>
+    <test name="Correct Manifest" method="validateXml">
+        <description>
+           <![CDATA[
+           This test determines whether the manifest valid according to the PCI-protocol3.xsd schema. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/CorrectManifest.xml">CorrectManifest.xml</a>. 
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/CorrectManifest.xml" />
+        <input-param name="schema" value="CeresProtocol3.xsd" />
+        <expect-errors />
+    </test>
+    <test name="Incorrect Manifest" method="validateXml">
+        <description>
+           <![CDATA[
+           This test determines whether the manifest invalid according to the PCI-protocol3.xsd schema. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/IncorrectManifest.xml">IncorrectManifest.xml</a>. 
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/IncorrectManifest.xml" />
+        <input-param name="schema" value="CeresProtocol3.xsd" />
+        <expect-errors>
+            <error type="ValidationError" message="XML file is not valid according to the schema" />
+        </expect-errors>
+    </test>
+    <test name="Valid RDF file" method="validateRdf">
+        <description>
+           <![CDATA[
+           This test determines whether the rdf file valid according to the ontology. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/CorrectRDF.rdf">CorrectRDF.rdf</a>. 
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/CorrectRDF.rdf" />
+        <input-param name="schema" value="condor.ttl" />
+        <expect-errors/>
+    </test>
+    <test name="Invalid RDF file" method="validateRdf">
+        <description>
+           <![CDATA[
+           This test determines whether the rdf file invalid according to the ontology. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/IncorrectRDF.rdf">IncorrectRDF.rdf</a>
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/IncorrectRDF.rdf" />
+        <input-param name="schema" value="condor.ttl" />
+        <expect-errors>
+            <error type="ValidationError" message="RDF file is invalid with ontolgy" />
+        </expect-errors>
+    </test>
+    <test name="Valid xhtml file" method="validateXml">
+        <description>
+           <![CDATA[
+           This test determines whether the xhtml file valid according to the PCI.xsd schema. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/CorrectXhtml.xhtml">CorrectXhtml.xhtml</a> 
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/CorrectXhtml.xhtml" />
+        <input-param name="schema" value="PCI.xsd" />
+        <expect-errors />
+    </test>
+    <test name="Invalid xhtml file" method="validateXml">
+        <description>
+           <![CDATA[
+           This test determines whether the xhtml file invalid according to the PCI.xsd schema. The test file is available in SVN at <a href="https://94.100.246.14/svn/repos/CondorNA/CondorServices/content-validation/trunk/content-validation-impl/src/test/resources/testpackages/IncorrectXhtml.xhtml">IncorrectXhtml.xhtml</a>
+           ]]>
+        </description>
+        <input-param name="fileName" value="src/test/resources/testpackages/IncorrectXhtml.xhtml" />
+        <input-param name="schema" value="PCI.xsd" />
+        <expect-errors>
+            <error type="ValidationError" message="XHTML file is not valid according to the schema" />
+        </expect-errors>
+    </test>
+</suite>
+
