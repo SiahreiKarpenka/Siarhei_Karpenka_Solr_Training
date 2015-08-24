@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Conversion Report</title>
+	<style type="text/css">
+body {
+    font-family: Consolas;
+    font-size: 13px;
+    color: #111;
+}
+
+h1 {
+    color: #444;
+}
+
+.container {
+}
+
+.test-box {
+    border: 1px solid silver;
+    padding: 1px;
+    margin-bottom: 10px;
+    background-color: #fafafa;
+}
+
+.test-head {
+    border: 1px solid silver;
+    padding: 2px 8px;
+}
+
+
+.test-box.ok {
+    border: 1px solid #53b159;
+}
+
+.test-box.ok .test-head {
+    background-color: #d8f0df;
+    border: 1px solid #53b159;
+}
+
+.test-box.error {
+    border: 1px solid #be5d5d;
+}
+
+.test-box.error .test-head {
+    background-color: #f8c0c0;
+    border: 1px solid #be5d5d;
+}
+
+.test-box.warning {
+    border: 1px solid #53b159;
+}
+
+.test-box.warning .test-head {
+    background-color: yellow;
+    border: 1px solid #53b159;
+}
+
+.test-desc {
+    padding: 6px 9px;
+    color: #444;
+}
+
+.test-name {
+
+}
+
+.test-result {
+    text-transform: uppercase;
+    float: right;
+}
+
+.error-div {
+    border-top: 1px solid silver;
+    padding: 6px 8px;
+}
+
+.error-message {
+    color: #ff0000;
+}
+
+.warning-message {
+    color: orange;
+}
+
+.info-message {
+    color: black;
+}
+
+.debug-message {
+    color: gray;
+}
+
+.error-label {
+    float: left;
+    margin: 0 6px 0 -1px;
+    padding: 0 0px;
+    border-radius: 2px;
+}
+
+.error-desc {
+    color: #ff0000;
+}
+
+.error-message-text {
+    white-space: pre-wrap;
+}
+	</style>
+</head>
+<body>
+    <h1>Validation results</h1>
+    <div class="container">
+	#foreach($result in $data)
+		#set ($result_string = $result.status)
+		<div class="test-box $result_string">
+                <div class="test-head $result_string">
+                    <div class="test-result">$result_string</div>
+                    <div class="test-name">$result.sourceContentObjectID</div>
+                </div>
+                <table>
+                	<tbody>
+					#foreach ($message in $result.report.message)
+                			<tr class='${message.status}-message'>
+                				<td>
+                    				[$message.status]
+                				</td>
+                				<td>
+                					$!message.subject
+                				</td>
+                				<td>
+                					$esc.html($message.text)
+                				</td>
+                			</tr>
+					#end
+                	</tbody>
+                </table>
+        </div>
+	#end
+    </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html style="min-width: 1610px;">
+<head>
+<title>Condor Import Pipeline</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<script src="js/jquery-1.10.2.js"></script>
+<style>
+#queueSize {
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	padding: 10px;
+	color: white;
+	background-color: #df0059;
+}
+</style>
+</head>
+<body>
+	<div class="top-line"></div>
+	<div class="nav-container">
+		<a href="condor-import-dashboard.html" class="nav-button"> <span
+			class="icon"></span><span>Condor Export Dashboard</span>
+		</a> <a href="status-overview.html" class="nav-button"> <span
+			class="icon"></span><span>Stakeholder Dashboard</span>
+		</a> <a href="performance-dashboard.html" class="nav-button"> <span
+			class="icon"></span><span>Performance Dashboard</span>
+		</a> <a href="index.html" class="nav-button active"> <span
+			class="icon"></span><span>User Dashboard</span>
+		</a>
+	</div>
+	<div id="loading" class="hidden">
+		<div class="msg">Loading...</div>
+	</div>
+	<div id="header">
+		<div class="topbar">
+			<img id="logo" src="img/logo.png">
+			<div class="heading">
+				<div>Condor Import Pipeline</div>
+				<div>Powered by Ecosystem Content Services</div>
+				<div class="version">
+					(CIP_R0.1.14; <span id="env_info">...</span>)
+				</div>
+			</div>
+
+		</div>
+		<div class="title-bar">
+			<div class="f-right">
+				<div class="paging-buttons" style="margin-right: 0">
+					<span class="paging-label">Nothing to display</span>
+					<button id="page_prev" class="button">
+						<span class="icon"></span>
+					</button>
+					<button id="page_next" class="button">
+						<span class="icon"></span>
+					</button>
+				</div>
+				<!--
+                    <button id="save_state_btn" class="button" style="margin-right: 9px;">Save State</button><button id="toggle_saved_state_btn" class="button">Show/Hide Saved State</button>
+                    -->
+			</div>
+			<div id="package_filter_switcher" class="ddl-wrap">
+				<div class="view-header ddl">
+					<span class="ddl-header-text">Acquired Packages</span> <span
+						class="arrow"></span>
+				</div>
+				<div class="ddl-panel">
+					<div class="ddl-item" data-index="0">Acquired Packages</div>
+					<div class="ddl-item" data-index="3">Acquired Packages By
+						Time</div>
+					<div class="ddl-item" data-index="1">Acquired Packages
+						(Errors)</div>
+					<div class="ddl-item" data-index="6">Not Acquired Packages</div>
+					<div class="ddl-item" data-index="2" id="item_packages_psa">All
+						PSA Packages</div>
+					<div class="ddl-item" data-index="4" id="item_packages_mercury">All
+						Mercury Packages</div>
+					<div class="ddl-item" data-index="5" id="item_packages_all">View
+						All Packages</div>
+
+				</div>
+			</div>
+			<span class="textfield" style="margin-right: 9px"> <span
+				id="clear_search" class="close hidden" title="Clear this field"></span><input
+				id="match_pattern" type="text"
+				placeholder="Search packages by name..." />
+			</span>
+			<button id="btn_search" class="button">Search</button>
+		</div>
+	</div>
+	<div class="container">
+		<div class="content-box">
+			<table id="cipTable" class="main-table cip-table">
+				<col width="62">
+				<col width="100">
+				<col width="210">
+				<col width="">
+				<col width="150">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<col width="80">
+				<thead>
+					<tr>
+						<th rowspan="2"></th>
+						<th rowspan="2">Doc Type</th>
+						<th rowspan="2" colspan="2">Content Set</th>
+						<th rowspan="2">Retrieval Time</th>
+						<th rowspan="2">Total Docs</th>
+						<th rowspan="2">Binary Objects</th>
+						<th colspan="2">Retrieval</th>
+						<th colspan="2">S2 Validation</th>
+						<th colspan="2">S2TOPCI</th>
+						<th colspan="2">Condor Validation</th>
+					</tr>
+					<tr>
+						<th>OK</th>
+						<th>ERROR</th>
+						<th>OK</th>
+						<th>ERROR</th>
+						<th>OK</th>
+						<th>ERROR</th>
+						<th>OK</th>
+						<th>ERROR</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+	<div id="rerun_popup" style="display: none">
+		<div class="popup-layer"></div>
+		<div class="popup">
+			<div class="popup-box">
+				<h4>
+					Re-run package <span id="rerun_popup_packagename"></span>
+				</h4>
+				<p class="section">In order to re-run the given package, please
+					select the process you want this package to start processing from.</p>
+				<div class="section">
+					<label>Process: </label> <select id="rerun_process">
+						<option></option>
+						<option value="validation-s2">S2 Validation</option>
+						<option value="content-conversion">S2TOPCI</option>
+						<option value="content-validation-condor">Condor
+							Validation</option>
+					</select>
+				</div>
+				<div id="error_message" class="error-message">&nbsp;</div>
+				<div class="section button-bar">
+					<button class="button ok" id="rerun_popup_ok">Rerun</button>
+					<button class="button" id="rerun_popup_cancel">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="queueSize" class="hidden"></div>
+	<script src="js/common.js"></script>
+	<script src="js/main.js"></script>
+	<script type="text/javascript">
+            function showQueueSize() {
+                var queueSize = $("#queueSize");
+                queueSize.removeClass("hidden");
+                $.get("queue-size", function (value) {
+                    queueSize.text("QUEUE SIZE: "+value);
+                });
+            }
+            if (Url.hasParam("show-queue")) {
+                showQueueSize();
+            }
+        </script>
+</body>
+</html>

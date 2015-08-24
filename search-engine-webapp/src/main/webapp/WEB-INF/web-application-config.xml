@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/task 
+        http://www.springframework.org/schema/task/spring-task.xsd">
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<bean id="schedulerBean" class="com.wolterskluwer.cip.webapp.schedule.Scheduler" />
+
+	<bean id="saveStateJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="schedulerBean" />
+		<property name="targetMethod" value="saveReportingState" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="loadPerformanceMetricsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="schedulerBean" />
+		<property name="targetMethod" value="reloadPerformanceMetrics" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="timeZone" class="java.util.TimeZone" factory-method="getTimeZone">
+		<constructor-arg value="UTC" />
+	</bean>
+
+	<bean id="saveStateTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="saveStateJob" />
+		<property name="timeZone" ref="timeZone" />
+
+		<!-- every monday 00:00 UTC -->
+		<property name="cronExpression" value="0 0 0 ? * MON *" />
+
+		<!-- 1 min -->
+		<!-- property name="cronExpression" value="0 0/1 * 1/1 * ? *" / -->
+	</bean>
+
+	<bean id="loadPerformanceMetricsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="loadPerformanceMetricsJob" />
+		<property name="timeZone" ref="timeZone" />
+		<property name="cronExpression" value="0 0/30 * 1/1 * ? *" /> <!-- 1 min -->
+	</bean>
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="saveStateTrigger" />
+				<ref bean="loadPerformanceMetricsTrigger" />
+			</list>
+		</property>
+	</bean>
+
+	<mvc:resources mapping="/**" location="/" />
+	<context:component-scan base-package="com.wolterskluwer.cip.webapp" />
+	<context:annotation-config />
+</beans>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<orchestration xmlns:ltr="http://purl.org/dc/elements/1.1/"
+	handle-archives="true">
+	<metadata>
+		<ltr:creator>Mikalai Ushanau</ltr:creator>
+		<ltr:description>New version of Condor validation</ltr:description>
+		<ltr:date>11/27/14</ltr:date>
+	</metadata>
+
+	<property name="path_schema_pci" value="xml/xsd/PCI/PCI.xsd" />
+	<property name="path_schema_pci_protocol" value="xml/xsd/PCI/protocol/PCI-protocol3.xsd" />
+	<property name="path_ontology" value="rdf/ontology/" />
+	<property name="path_common" value="rdf/common/" />
+	<property name="path_catalog" value="catalog.xml" />
+
+    <!--reporter id="http://wolterskluwer.com/services/report/ReportServiceReporter">
+        <param name="endpoint" value="http://localhost:8080/report-service-war/reportService" />
+        <param name="process_id_prefix" value="content-validation-condor-" />
+    </reporter-->
+    
+	<context>
+		<filters>
+			<mime-type ignore-params="false"
+				name="application/x-url;file-type=pci-package" />
+			<mime-type ignore-params="false" name="application/zip;type=pci" />
+		</filters>
+		<validation
+			ref-id="http://wolterskluwer.com/services/validation/PciProtocol3Validation"
+			break-on-error="true">
+			<param name="path.catalog" value="${path_catalog}" />
+            <param name="allow.interchange" value="true"/>
+		</validation>
+	</context>
+
+	<context>
+		<filters>
+			<path value="manifest.xml" />
+		</filters>
+		<validation
+			ref-id="http://wolterskluwer.com/services/validation/SchemaValidation"
+			break-on-error="true">
+			<param name="path.xsd" value="${path_schema_pci_protocol}" />
+			<param name="path.catalog" value="${path_catalog}" />
+		</validation>
+	</context>
+
+	<context>
+		<filters>
+			<mime-type ignore-params="false" name="application/rdf+xml;type=pci" />
+			<path value="**/*.rdf" />
+		</filters>
+		<validation
+			ref-id="http://wolterskluwer.com/services/validation/OntologyValidation">
+			<param name="path.ontology" value="${path_ontology}" />
+			<!-- A paramater specific to this validation that loads all matching files 
+				into one model before validating it -->
+			<param name="group-by-last-level" value="true" />
+			<param name="aggregate" value="true" />
+			<!-- map to Pellet property to enable explanation mode -->
+			<param name="explanation" value="true" />
+		</validation>
+
+		<validation
+			ref-id="http://wolterskluwer.com/services/validation/SkosTermExistenceValidation">
+			<!-- don't allow path wildcards in params -->
+			<param name="path.skos" value="rdf/skos/*.ttl" />
+			<param name="path.additional" value="${path_ontology}" />
+			<param name="path.additional" value="${path_common}" />
+		</validation>
+
+		<validation
+			ref-id="http://wolterskluwer.com/services/validation/RdfBusinessRuleValidation">
+			<param name="path.rules" value="rdf/sparql/*.xml" />
+			<param name="aggregate" value="true" />
+		</validation>
+
+	</context>
+
+	<context>
+		<filters>
+			<mime-type ignore-params="false" name="application/xhtml+xml;type=pci" />
+			<path value="**/*.xhtml" />
+		</filters>
+		<validation
+			ref-id="http://wolterskluwer.com/services/validation/SchemaValidation">
+			<param name="path.xsd" value="${path_schema_pci}" />
+			<param name="path.catalog" value="${path_catalog}" />
+		</validation>
+
+		<validation
+			ref-id="http://wolterskluwer.com/services/validation/SchematronValidation">
+			<param name="path.catalog" value="${path_catalog}" />
+			<param name="path.schematron" value="xml/schematron/PCIXHTML.xsl" />
+		</validation>
+	</context>
+
+</orchestration>

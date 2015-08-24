@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+	<!-- ===================================================================== -->
+	<!--                                                                       -->
+	<!--  Log4j Configuration                                                  -->
+	<!--                                                                       -->
+	<!-- ===================================================================== -->
+
+<log4j:configuration
+	xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+
+	<appender
+		name="CONSOLE"
+		class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param
+				name="ConversionPattern"
+				value="%d{HH:mm:ss,SSS} %-5p [%c{1}:%M:%L] %m%n" />
+		</layout>
+
+	</appender>
+
+
+	<logger name="com.wolterskluwer.service">
+		<level value="INFO" />
+	</logger>
+	<logger name="com.wolterskluwer.services.content">
+		<level value="INFO" />
+	</logger>
+	<logger name="com">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org">
+		<level value="ERROR" />
+	</logger>
+	<logger name="net">
+		<level value="ERROR" />
+	</logger>
+	<logger name="com.wolterskluwer.osa.commons.jaxwshandlers.client.OsaLoggingHandler">
+		<level value="ERROR" />
+	</logger>
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+
+</log4j:configuration>

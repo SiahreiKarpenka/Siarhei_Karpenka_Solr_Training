@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Condor Import Pipeline</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<script src="js/jquery-1.10.2.js"></script>
+</head>
+<body>
+	<div id="loading" class="hidden">
+		<div class="msg">Loading...</div>
+	</div>
+	<div id="header">
+		<div class="topbar">
+			<img id="logo" src="img/logo.png">
+			<div class="heading">
+				<div>Condor Import Pipeline</div>
+				<div>Powered by Ecosystem Content Services</div>
+				<div class="version">(CIP_R0.1.14)</div>
+			</div>
+			<div id="env_info">...</div>
+		</div>
+		<div class="title-bar">
+			<h1>Error Messages</h1>
+		</div>
+	</div>
+	<div class="container">
+		<!--
+            <div id="info_line" style="display: none">
+                <span class="info-item"><span class="lheader">Content Set:</span><span id="package_name" class="info-value">SOMEPACKAGE</span></span>
+                <span class="info-item"><span class="lheader">Document ID:</span><span id="doc_uri" class="info-value">http://wolterskluwer.com/ceres/opco/wk-us/Mercury/0d2cb947a09939d98e618166d0172831</span></span>
+            </div>
+            -->
+
+		<div class="breadcrumb">
+			<div class="bc-item">
+				<span id="package_name">SOMEPACKAGE</span>
+				<div class="bc-sep"></div>
+			</div>
+			<div class="bc-item">
+				<span id="doc_uri">http://wolterskluwer.com/ceres/opco/wk-us/Mercury/0d2cb947a09939d98e618166d0172831</span>
+				<div class="bc-sep"></div>
+			</div>
+		</div>
+
+		<div id="content" class="content-box">
+			<div class="line"></div>
+			<table id="error_list" class="main-table error-table">
+				<col width="400">
+				<col>
+				<col width="100">
+				<thead>
+					<th>Process ID</th>
+					<th class="message-cell">Error Message</th>
+					<th>Status</th>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+	<script src="js/common.js"></script>
+	<script src="js/error_list.js"></script>
+</body>
+</html>

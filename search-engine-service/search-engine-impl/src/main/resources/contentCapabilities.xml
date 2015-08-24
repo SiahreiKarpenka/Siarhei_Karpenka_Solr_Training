@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:capabilities
+    xmlns="http://services.wolterskluwer.com/types/common" 
+    xmlns:ns_1="http://services.wolterskluwer.com/types/common/capabilities"
+    xmlns:tns="http://services.wolterskluwer.com/types/content/capabilities" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns_1:request>
+        <ns_1:authenticatedUserRequired>true</ns_1:authenticatedUserRequired>
+    </ns_1:request>
+    <ns_1:diagnostics>
+        <ns_1:implementationVersion>1.0.0-SNAPSHOT</ns_1:implementationVersion>
+    </ns_1:diagnostics>
+    <tns:Validation>
+    	<ns_1:implemented>true</ns_1:implemented>
+    	<tns:validate>
+    		<ns_1:implemented>true</ns_1:implemented>
+    	</tns:validate>
+    	<tns:validateAsynch>
+    		<ns_1:implemented>true</ns_1:implemented>
+    	</tns:validateAsynch>
+    	<tns:getValidationStatus>
+    		<ns_1:implemented>true</ns_1:implemented>
+    	</tns:getValidationStatus>
+    	<tns:getValidationResult>
+    		<ns_1:implemented>true</ns_1:implemented>
+    	</tns:getValidationResult>
+    	<ns_1:implementationVersion>1.0.0-SNAPSHOT</ns_1:implementationVersion>
+    </tns:Validation>
+</tns:capabilities>

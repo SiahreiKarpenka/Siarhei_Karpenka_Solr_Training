@@ -1,0 +1,38 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT suite (test)+>
+<!ATTLIST suite
+  xmlns CDATA #FIXED ''
+  name NMTOKEN #REQUIRED>
+
+<!ELEMENT test (description,input?,input-param?,expect-errors)>
+<!ATTLIST test
+  xmlns CDATA #FIXED ''
+  method NMTOKEN #IMPLIED
+  name CDATA #REQUIRED>
+
+<!ELEMENT description (#PCDATA)>
+<!ATTLIST description
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT input EMPTY>
+<!ATTLIST input
+  xmlns CDATA #FIXED ''
+  location CDATA #REQUIRED>
+
+<!ELEMENT input-param EMPTY>
+<!ATTLIST input-param
+  xmlns CDATA #FIXED ''
+  name NMTOKEN #REQUIRED
+  value CDATA #REQUIRED>
+
+<!ELEMENT expect-errors (error)?>
+<!ATTLIST expect-errors
+  xmlns CDATA #FIXED ''
+  sum CDATA #IMPLIED>
+
+<!ELEMENT error EMPTY>
+<!ATTLIST error
+  xmlns CDATA #FIXED ''
+  message CDATA #REQUIRED
+  type NMTOKEN #REQUIRED>
